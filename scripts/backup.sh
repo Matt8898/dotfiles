@@ -1,10 +1,10 @@
 #!/bin/bash
 rm /home/matt/lb1
+echo $(date +%Y/%m/%d) > /home/matt/lb1
 sshfs root@192.168.0.126:/backup/matt ~matt/backup
-sudo mount /dev/sdb1 ~matt/backup
 rsync -aAX --verbose /home/matt/wp ~matt/backup/wp
 rsync -aAX --verbose /home/matt/Immagini ~matt/backup/Immagini
-rsync -aAX --verbose /home/matt/projects/ ~matt/backup/Musica/
+rsync -aAX --verbose /home/matt/Musica/ ~matt/backup/Musica/
 rsync -aAX --verbose /home/matt/projects/ ~matt/backup/projects/
 rsync -aAX --verbose /home/matt/scripts/ ~matt/backup/scripts/
 rsync -aAX --verbose /home/matt/Documenti/ ~matt/backup/Documenti
