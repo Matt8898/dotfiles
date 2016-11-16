@@ -30,7 +30,7 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id st tmux attach
+bindsym $mod+Return exec --no-startup-id /usr/bin/st
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -42,13 +42,16 @@ bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 300 -opaci
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
+bindsym $mod+p move workspace to output right
+bindsym $mod+o move workspace to output left
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
 bindsym $mod+l focus up
 bindsym $mod+semicolon focus right
 
-bindsym $mod+shift+x exec i3lock --color "$bg-color"
+bindsym $mod+shift+x exec /home/matt/scripts/lock.sh
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -94,16 +97,22 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+workspace 6 output DVI-D-0
+workspace 7 output DVI-D-0
+workspace 10 output DVI-D-0
+workspace 11 output DVI-D-0
+
 set $workspace1 "1 "
 set $workspace2 "2 "
 set $workspace3 "3 "
 set $workspace4 "4 "
 set $workspace5 "5 "
-set $workspace6 "6 "
+set $workspace6 "6 " 
 set $workspace7 "7 "
 set $workspace8 "8 "
 set $workspace9 "9 "
-set $workspace10 "10 "
+set $workspace10 "10 "
+set $workspace11 "11 "
 
 bindsym $mod+1 workspace $workspace1
 bindsym $mod+2 workspace $workspace2
@@ -115,15 +124,16 @@ bindsym $mod+7 workspace $workspace7
 bindsym $mod+8 workspace $workspace8
 bindsym $mod+9 workspace $workspace9
 bindsym $mod+0 workspace $workspace10
+bindsym $mod+minus workspace $workspace11
 
 assign [class="Transmission"] $workspace7
 assign [class="Virt-manager"] $workspace10
 assign [class="nemo"] $workspace10
-assign [class="Audacious"] $workspace10
+assign [class="Spotify"] $workspace6
 assign [class="Steam"] $workspace4
 assign [class="chromium"] $workspace5
 assign [class="Hexchat"] $workspace9
-assign [class="virt-manager"] $workspace6
+assign [class ="conky"] $workspace11
 
 bindsym $mod+Shift+1 move container to workspace $workspace1
 bindsym $mod+Shift+2 move container to workspace $workspace2
@@ -135,6 +145,7 @@ bindsym $mod+Shift+7 move container to workspace $workspace7
 bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
+bindsym $mod+Shift+minus move container to workspace $workspace11
 
 bindsym $mod+F3 exec --no-startup-id amixer -D pulse sset Master 5%+ #increase sound volume
 bindsym $mod+F2 exec --no-startup-id amixer -D pulse sset Master 5%- #decrease sound volume
@@ -208,21 +219,26 @@ bar {
 		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
 		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
 	}
-	position top
+	position bottom
+	mode hide
 }
-exec --no-startup-id conky -c ~/.config/lemonbar_conky
 exec setxkbmap us
-exec audacious
-exec steam
+exec __GL_THREADED_OPTIMIZATIONS=0 steam
 exec nemo
-exec compton -f
+exec cairo-compmg &
+exec tilda &
 exec hexchat
 exec chromium
 exec firefox-nightly
+exec spotify
 exec transmission-gtk
 exec /home/matt/scripts/screen.sh
 new_window normal 0 px
 for_window [class="^.*"] border pixel 1
 exec virt-manager
 new_window 1pixel
-exec_always feh --bg-scale /home/matt/wp/wallpaper.jpg
+for_window[class="Plank"] floating enable
+exec conky-manager &
+exec xrandr --output DVI-D-0 --right-of HDMI-0
+exec-always nitrogen--restore
+exec setxkbmap -option caps:escape &
