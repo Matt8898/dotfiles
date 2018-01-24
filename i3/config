@@ -29,8 +29,10 @@ font pango:monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+bindsym $mod+q exec ~/scripts/lock
+bindsym $mod+Shift+e exit
 # start a terminal
-bindsym $mod+Return exec --no-startup-id /usr/bin/st
+bindsym $mod+Return exec --no-startup-id /usr/bin/terminator
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -210,7 +212,7 @@ hide_edge_borders both
 bar {
         status_command i3blocks -c ~/scripts/i3blocks.conf
         #status_command i3blocks -c ~/.config/i3/i3_lemonbar.sh
-	tray_output none
+	tray_output primary
 	colors {
 		background $bg-color
 	    	separator #757575
@@ -222,23 +224,11 @@ bar {
 	position bottom
 	mode hide
 }
-exec setxkbmap us
-exec __GL_THREADED_OPTIMIZATIONS=0 steam
-exec nemo
-exec cairo-compmg &
-exec tilda &
-exec hexchat
-exec chromium
-exec firefox-nightly
-exec spotify
-exec transmission-gtk
-exec /home/matt/scripts/screen.sh
+exec firefox-nightly &
 new_window normal 0 px
 for_window [class="^.*"] border pixel 1
-exec virt-manager
 new_window 1pixel
-for_window[class="Plank"] floating enable
-exec conky-manager &
-exec xrandr --output DVI-D-0 --right-of HDMI-0
-exec-always nitrogen--restore
 exec setxkbmap -option caps:escape &
+exec setxkbmap us &
+exec compton &
+exec --no-startup-id nitrogen --restore

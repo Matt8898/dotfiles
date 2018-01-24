@@ -1,13 +1,15 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'mhinz/vim-startify'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug('scrooloose/nerdtree')
 Plug('tpope/vim-surround')
 Plug('gcmt/wildfire.vim')
-Plug('itchyny/calendar.vim')
+Plug('kovisoft/slimv')
 Plug('kien/rainbow_parentheses.vim')
 Plug('ntpeters/vim-better-whitespace')
 Plug('SpaceVim/cscope.vim')
+Plug 'parsonsmatt/intero-neovim'
 Plug('flazz/vim-colorschemes')
 Plug('idanarye/vim-vebugger')
 Plug('raimondi/delimitmate')
@@ -19,10 +21,8 @@ Plug('zchee/deoplete-jedi')
 Plug('Rip-Rip/clang_complete')
 Plug('simnalamburt/vim-mundo')
 Plug('rust-lang/rust.vim')
-Plug('sebastianmarkow/deoplete-rust')
 Plug('Yggdroot/indentLine')
 Plug('ryanoasis/vim-devicons')
-" Plug('https://github.com/vim-syntastic/syntastic.git')
 Plug('neomake/neomake')
 Plug('majutsushi/tagbar')
 Plug('ctrlpvim/ctrlp.vim')
@@ -63,6 +63,20 @@ function SplitTerm()
 endfunction
 
 "Plugin configuration
+" LanguageClient
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rls'],
+    \ }
+
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 " Rainbow
 let g:rbpt_loadcmd_toggle = 0
 let g:rbpt_loadcmd_toggle = 0
@@ -165,6 +179,8 @@ nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
 nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 " i: Find files #including this file
 nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+" Vim-slime
+let g:slime_target = "neovim"
 
 set encoding=utf8
 set number
@@ -174,4 +190,5 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 set undofile
+au BufRead,BufNewFile *.asm set filetype=nasm
 set undodir=~/.vim/undo
