@@ -7,7 +7,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 Plug('scrooloose/nerdtree')
 Plug('tpope/vim-surround')
-Plug('gcmt/wildfire.vim')
+Plug('flazz/vim-colorschemes')
 Plug('luochen1990/rainbow')
 Plug('ntpeters/vim-better-whitespace')
 Plug 'parsonsmatt/intero-neovim'
@@ -18,7 +18,7 @@ Plug('simnalamburt/vim-mundo')
 Plug('rust-lang/rust.vim')
 Plug('Yggdroot/indentLine')
 Plug('ryanoasis/vim-devicons')
-Plug('neomake/neomake')
+Plug('w0rp/ale')
 Plug('majutsushi/tagbar')
 Plug('sbdchd/neoformat')
 Plug('junegunn/vim-easy-align')
@@ -31,11 +31,13 @@ Plug 'ncm2/ncm2'
 Plug 'ncm2/ncm2-path'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-pyclang'
+Plug 'ncm2/ncm2-jedi'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'ObserverOfTime/ncm2-jc2', {'for': ['java', 'jsp']}
+Plug 'l04m33/vlime', {'rtp': 'vim/'}
 call plug#end()
 let g:rainbow_active = 1
-set termguicolors
+" set termguicolors
 "Keybinds
 map <C-n> :NERDTreeToggle<CR>
 map <C-p> :bnext<CR>
@@ -82,9 +84,9 @@ endfunction
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
+"    \ 'python' : ['/home/matt/.local/bin/pyls'],
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rls'],
-    \ 'python' : ['/home/matt/.local/bin/pyls'],
     \ }
 
 " Automatically start language servers.
@@ -119,13 +121,6 @@ function! s:filter_header(lines) abort
     endfunction
 
 let g:startify_custom_header = s:filter_header(startify#fortune#boxed())
-" Neomake
-" When writing a buffer.
-call neomake#configure#automake('w')
-" When writing a buffer, and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)
-" When reading a buffer (after 1s), and when writing.
-call neomake#configure#automake('rw', 1000)
 set encoding=utf8
 set number
 noremap <Up> <NOP>
@@ -154,4 +149,8 @@ autocmd FileType c,cpp nnoremap <buffer> gd :<c-u>call ncm2_pyclang#goto_declara
 " Java complete
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
-colorscheme base16-twilight
+colorscheme Benokai
+set tabstop=4
+set shiftwidth=4
+
+let g:vlime_cl_use_terminal = 1
