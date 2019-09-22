@@ -1,0 +1,27 @@
+{
+"languageserver": {
+	"d": {
+      "command": "/home/matt/.dub/packages/.bin/dls-v0.25.15/dls", // this path should be printed with the previous commands
+      "args": ["--stdio"],
+      "filetypes": ["d"],
+      "trace.server": "off",
+      "rootPatterns": ["dub.json", "dub.sdl"],
+      "initializationOptions": {
+      },
+      "settings": {
+      }
+    },
+    "ccls": {
+      "command": "ccls",
+	  "args": ["-log-file=/tmp/ccls.log -v=1"],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "initializationOptions": {
+         "cache": {
+			 "directory": "/tmp/ccls"
+         }
+       }
+    }
+  },
+  "coc.preferences.extensionUpdateCheck": "never"
+}

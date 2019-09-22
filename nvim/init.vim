@@ -1,11 +1,14 @@
 call plug#begin('~/.local/share/nvim/plugged')
-
+set viminfo="NONE"
+set shada="NONE"
+set shada="NONE"
+let g:ale_completion_enabled = 1
+let g:ale_c_parse_makefile = 1
 Plug 'mhinz/vim-startify'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug('scrooloose/nerdtree')
+Plug('zah/nim.vim')
 Plug('tpope/vim-surround')
 Plug('flazz/vim-colorschemes')
 Plug('luochen1990/rainbow')
@@ -14,11 +17,9 @@ Plug 'parsonsmatt/intero-neovim'
 Plug('raimondi/delimitmate')
 Plug('bling/vim-airline')
 Plug('vim-airline/vim-airline-themes')
-Plug('simnalamburt/vim-mundo')
 Plug('rust-lang/rust.vim')
 Plug('Yggdroot/indentLine')
 Plug('ryanoasis/vim-devicons')
-Plug('w0rp/ale')
 Plug('majutsushi/tagbar')
 Plug('sbdchd/neoformat')
 Plug('junegunn/vim-easy-align')
@@ -26,15 +27,17 @@ Plug('airblade/vim-gitgutter')
 Plug('tpope/vim-fugitive')
 Plug('udalov/kotlin-vim')
 Plug('JuliaEditorSupport/julia-vim')
+Plug('simnalamburt/vim-mundo')
 Plug 'chriskempson/base16-vim'
-Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-path'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-pyclang'
-Plug 'ncm2/ncm2-jedi'
-Plug 'artur-shaik/vim-javacomplete2'
-Plug 'ObserverOfTime/ncm2-jc2', {'for': ['java', 'jsp']}
+"Plug 'ncm2/ncm2'
+"Plug 'ncm2/ncm2-path'
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2-pyclang'
+"Plug 'ncm2/ncm2-jedi'
+"Plug 'artur-shaik/vim-javacomplete2'
+"Plug 'ObserverOfTime/ncm2-jc2', {'for': ['java', 'jsp']}
 Plug 'l04m33/vlime', {'rtp': 'vim/'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 let g:rainbow_active = 1
 " set termguicolors
@@ -136,11 +139,6 @@ set undofile
 au BufRead,BufNewFile *.asm set filetype=nasm
 set undodir=~/.vim/undo
 
-" ncm2
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
-    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " pyclang
 " path to directory where libclang.so can be found
 " or path to the libclang.so file
@@ -152,5 +150,28 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 colorscheme Benokai
 set tabstop=4
 set shiftwidth=4
+autocmd FileType json syntax match Comment +\/\/.\+$+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
 
 let g:vlime_cl_use_terminal = 1
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<C-l>'
+let g:coc_snippet_prev = '<C-k>'
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() :
+                                           \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
